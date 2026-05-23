@@ -42,3 +42,8 @@ chmod +x <工具名>.py
 ## 许可证
 
 [MIT License](LICENSE)
+
+## 关注作者
+
+- 博客：[blog.rouguang.top](https://blog.rouguang.top/)
+- 小红书：[@揉光入野](https://www.xiaohongshu.com/user/profile/1043817685)
