@@ -116,6 +116,90 @@ project/
 
 ---
 
+## terminal_theme_switcher
+
+根据 macOS 系统外观模式自动切换 Terminal 主题。
+
+### 功能说明
+
+检测 macOS 当前的外观模式（浅色/深色），自动将 Terminal.app 的主题切换为对应的配置。
+
+**核心逻辑：**
+1. 通过 `defaults read -g AppleInterfaceStyle` 检测系统外观模式
+2. 深色模式使用 `Clear Dark` 主题，浅色模式使用 `Clear Light` 主题
+3. 更新 Terminal 的默认窗口配置和启动配置
+4. 通过 AppleScript 通知正在运行的 Terminal 刷新所有窗口和标签页
+
+**适用场景：**
+- macOS 系统外观模式切换时自动同步 Terminal 主题
+- 配合 launchd 或其他自动化工具实现自动切换
+
+### 使用方法
+
+```bash
+# 直接运行脚本
+./terminal_theme_switcher.sh
+
+# 添加到 PATH 后运行
+terminal_theme_switcher.sh
+```
+
+### 配置说明
+
+脚本内置两个主题配置，可根据需要修改：
+
+| 变量 | 默认值 | 说明 |
+|------|--------|------|
+| `LIGHT_PROFILE` | Clear Light | 浅色模式使用的主题名称 |
+| `DARK_PROFILE` | Clear Dark | 深色模式使用的主题名称 |
+
+**修改主题名称：**
+```bash
+# 编辑脚本开头的变量
+LIGHT_PROFILE="你的浅色主题名称"
+DARK_PROFILE="你的深色主题名称"
+```
+
+### 使用场景
+
+**场景 1：手动切换**
+```bash
+# 当系统切换外观模式后，手动运行脚本同步 Terminal
+./terminal_theme_switcher.sh
+```
+
+**场景 2：自动切换（配合 launchd）**
+```xml
+<!-- ~/Library/LaunchAgents/com.user.terminal-theme.plist -->
+<key>ProgramArguments</key>
+<array>
+    <string>/path/to/terminal_theme_switcher.sh</string>
+</array>
+```
+
+**场景 3：集成到其他脚本**
+```bash
+# 在 .zshrc 或其他配置中调用
+if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
+    /path/to/terminal_theme_switcher.sh
+fi
+```
+
+### 注意事项
+
+- 仅适用于 macOS 自带的 Terminal.app，不支持 iTerm2 或其他终端
+- 主题名称必须与 Terminal 中已存在的主题配置完全匹配
+- 需要在 Terminal 的偏好设置中预先创建对应的主题配置
+- 脚本会同时更新默认配置和所有已打开的窗口/标签页
+
+### 示例输出
+
+```
+2026年5月28日 10:30:00: 已切换到 Clear Dark
+```
+
+---
+
 <!-- 新工具说明模板 -->
 
 <!--
